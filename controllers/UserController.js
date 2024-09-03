@@ -120,6 +120,8 @@ export const updateUser = async (req, res) => {
     });
   }
 
+  // email is uniq that's why we use FindUnique
+  //   use index in database
   const findOne = await prisma.user.findUnique({
     where:{
         email: email,

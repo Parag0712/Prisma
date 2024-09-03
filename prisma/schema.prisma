@@ -18,7 +18,33 @@ model User {
   name       String?
   email      String  @unique
   password   String?
-  // posts      Post[]
-  // comments   Comment[]
+  posts      Post[]
+  comments   Comment[]
   createdAt  DateTime @default(now())
+}
+
+// for good security use autoincrement
+model Post {
+  id            Int       @id @default(autoincrement())
+  // Cascar when user delete all post
+  user          User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  comment       Comment[]
+  user_id       Int
+  title         String
+  description   String
+  comment_count Int       @default(0)
+  created_at    DateTime  @default(now())
+}
+
+// uuid for uniq
+model Comment {
+  id         String   @id @default(uuid())
+  // here the refren [id] is post id
+  // Cascar when user delete all post and comment
+  post       Post     @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  post_id    Int
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id    Int
+  comment    String
+  created_at DateTime @default(now())
 }
