@@ -1,5 +1,34 @@
 import prisma from "../DB/dbConfig.js";
 
+export const getAllUsers = async (req, res) => {
+
+  // This code is using Prisma to fetch all users from the database. 
+  // The `findMany` method is used to retrieve multiple records.
+  // The `select` option is used to specify the fields to include in the result.
+  // In this case, we're selecting the count of related records, specifically posts and comments.
+  // This allows us to include the count of posts and comments for each user in the result.
+  const users = await prisma.user.findMany(
+    {
+      select:{
+        _count:{
+          select:{
+            posts:true,
+            comments:true
+          }
+        }
+      }
+    }
+  );
+
+  if (!users) {
+    return res.json({
+      status: 404,
+      message: "No users found.",
+    });
+  }
+  return res.json({ status: 200, data: users });
+}
+
 // create User
 export const createUser = async (req, res) => {
   const { name, email, password } = req.body;
