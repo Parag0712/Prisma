@@ -20,6 +20,18 @@ export const getAllUsers = async (req, res) => {
           }
         }
       }
+
+      // {
+      //   include:{
+      //     posts:true,
+      //     _count:{
+      //       select:{
+      //         posts:true,
+      //         comments:true
+      //       }
+      //     }
+      //   }
+      // }
     }
   );
 
