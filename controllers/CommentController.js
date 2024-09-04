@@ -1,4 +1,4 @@
-import prisma from "../DB/db.config.js";
+import prisma from "../DB/dbConfig.js";
 
 export const getAllComments = async (req, res) => {
   const comments = await prisma.comment.findMany({
@@ -53,6 +53,7 @@ export const createComment = async (req, res) => {
 // get comment
 export const getComment = async (req, res) => {
   const commentId = req.params.id;
+  console.log(req);
   if(!commentId){
     return res.json({
       status: 400,
@@ -61,7 +62,7 @@ export const getComment = async (req, res) => {
   }
   const post = await prisma.comment.findFirst({
     where: {
-      id: Number(commentId),
+      id: commentId,
     },
   });
 
@@ -69,11 +70,12 @@ export const getComment = async (req, res) => {
 };
 
 export const deleteComment = async (req, res) => {
-  const commentId = req.params.id;
-  if(!commentId){
+  
+  const { id, post_id } = req.query;
+  if(!id || !post_id){
     return res.json({
       status: 400,
-      message: "Comment ID is required.",
+      message: "Comment ID post_id is required.",
     });
   }
 
@@ -91,7 +93,7 @@ export const deleteComment = async (req, res) => {
 
   await prisma.comment.delete({
     where: {
-      id: Number(commentId),
+      id:id,
     },
   });
 

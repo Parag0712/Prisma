@@ -10,6 +10,9 @@ export const getAllUsers = async (req, res) => {
   const users = await prisma.user.findMany(
     {
       select:{
+        name:true,
+        id:true,
+        posts:true,
         _count:{
           select:{
             posts:true,
